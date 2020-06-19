@@ -28,4 +28,4 @@ Navigate to http://localhost:3000/.
 
 ## Resources
 
-Dataset can be found (here)[http://hck.re/A1Fz4c].
+Dataset can be found [here](http://hck.re/A1Fz4c).
