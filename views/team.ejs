@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>IPL</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <div class="container-fluid">
+      <h2 class="text-center display-4">IPL Dataset</h2>
+    </div>
+  </head>
+  <body>
+    <div class="container text-center">
+      <div
+        class="btn-group btn-group-lg"
+        role="group"
+        aria-label="Basic example"
+      >
+        <% Object.keys(seasons).forEach(season => { %>
+        <button type="button" class="btn btn-dark" value=<%= season %> >
+            <%= season %>
+        </button>
+         
+        <% }); %>
+      </div>
+      <% Object.keys(seasons).forEach(season => { %>
+        <div class="container-fluid seasonDiv text-center" id=<%= season %> >
+      <h3><%= season %></h3>
+        <% var count = 1; seasons[season].forEach(match => { %>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title"><%= match.team1 %> vs <%= match.team2 %></h4>
+                    <h6 class="card-subtitle mb-2 text-muted">Match <%= count++; %> | <%= match.date %>  </h6>
+                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                    <p class="card-text">
+                    <%
+                        var message = "";
+                        if(match.result === "normal")   {
+                            message = match.winner;
+                            if(match["win_by_runs"]>0)
+                                message += " won by " + match["win_by_runs"] + " runs.";
+                            else
+                                message += " won by " + match["win_by_wickets"] + " wickets.";
+                        }
+                        else if(match.result == "tie")  {
+                            message = "Match tied.";
+                        }
+                        else    {
+                            message = "Match abandoned.";
+                        }
+                    %>
+                    <%= message %>
+                    </p>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+      <% }); %>
+    </div>
+    <script>
+      var buttons = document.getElementsByTagName("button");
+      var divs = document.getElementsByClassName("seasonDiv");
+      var seasons = [];
+      var currentSeason = '2008';
+
+
+      function changeSeasonTable(e) {
+        if (e) currentSeason = e.target.value;
+        
+        for(var j=0;j<divs.length;j++)  {
+          if(divs[j].id == currentSeason) {
+            divs[j].style.display = "block";
+          } else {
+            divs[j].style.display = "none";
+          }
+        }        
+      }
+
+      for(var i=0;i<buttons.length;i++) {
+        buttons[i].addEventListener('click', changeSeasonTable);
+        seasons.push(buttons[i].value);
+      }
+
+      changeSeasonTable();
+    </script>
+  </body>
+</html>
