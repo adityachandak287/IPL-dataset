@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+dotenv.config();
 
 var mongo = require("mongodb").MongoClient;
-const mongoURI = "mongodb://localhost:27017";
-const PORT = 3000;
+const mongoURI = process.env.MONGO_URI;
+const PORT = process.env.port || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -13,7 +15,7 @@ mongo.connect(
   mongoURI,
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   },
   (err, client) => {
     if (err) {
@@ -25,12 +27,11 @@ mongo.connect(
     const matchesCollection = db.collection("tables");
 
     app.get("/", (req, res) => {
-      matchesCollection.find().toArray(function(err, tables) {
+      matchesCollection.find().toArray(function (err, tables) {
         if (err) console.log(err);
-        // else console.log(docs);
 
         res.render("index", {
-          tables: tables
+          tables: tables,
         });
       });
     });
@@ -38,12 +39,12 @@ mongo.connect(
     app.get("/table/:season", (req, res) => {
       matchesCollection
         .find({ season: req.params.season })
-        .toArray(function(err, table) {
+        .toArray(function (err, table) {
           if (err) console.log(err);
           // else console.log(docs);
 
           res.render("table", {
-            season: table[0]
+            season: table[0],
           });
         });
     });
@@ -51,14 +52,14 @@ mongo.connect(
     app.get("/team/:teamname", (req, res) => {
       db.collection("matches")
         .find({
-          $or: [{ team1: req.params.teamname }, { team2: req.params.teamname }]
+          $or: [{ team1: req.params.teamname }, { team2: req.params.teamname }],
         })
-        .toArray(function(err, matches) {
+        .toArray(function (err, matches) {
           if (err) console.log(err);
 
           var teamWise = {};
 
-          matches.forEach(match => {
+          matches.forEach((match) => {
             var currSeason = "" + match["season"];
             if (!Object.keys(teamWise).includes(currSeason)) {
               teamWise[currSeason] = [];
@@ -67,12 +68,12 @@ mongo.connect(
           });
           // res.send(teamWise);
           res.render("team", {
-            seasons: teamWise
+            seasons: teamWise,
           });
         });
     });
 
-    app.listen(PORT, function() {
+    app.listen(PORT, function () {
       console.log(`Listening on port ${PORT}`);
     });
   }
