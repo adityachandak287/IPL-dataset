@@ -7,7 +7,7 @@ Simple node.js app to display IPL dataset using express, mongoDB and server side
 |                        | 2008 Season                                  | 2016 Season                                  |
 | :--------------------: | -------------------------------------------- | -------------------------------------------- |
 |         Table          | <img src="images/2008-home.png" width=480 /> | <img src="images/2016-home.png" width=480 /> |
-| Mumbai Indians Matches | <img src="images/2008-MI.png" width=480 />   | <img src="images/2016-MI.png" width=480 />   |
+| Mumbai Indians Matches | <img src="images/2008-MI.png" width=480 />   | <img src="images/2016-MI.PNG" width=480 />   |
 
 ## How to run project locally
 
